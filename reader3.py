@@ -9,6 +9,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
+from streamlit_navigation_bar import st_navbar
 
 load_dotenv()
 os.getenv("GOOGLE_API_KEY")
@@ -82,24 +83,75 @@ def user_input(user_question):
 
 
 def main():
-    st.set_page_config("Chat PDF")
-    st.header("Chat with PDF using Gemini💁")
+    st.set_page_config(initial_sidebar_state="collapsed")
+   
+    pages = ["🏘 Home", "Library", "Tutorials", "Development", "Download"]
+    styles = {
+    "nav": {
+        "background-color": "#060270",
+    },
+    "div": {
+        "max-width": "32rem",
+    },
+    "span": {
+        "border-radius": "0.5rem",
+        "padding": "0.4375rem 0.625rem",
+        "margin": "0 0.125rem",
+    },
+    "active": {
+        "background-color": "rgba(255, 255, 255, 0.50)",
+    },
+    "hover": {
+        "background-color": "rgba(255, 255, 255, 0.35)",
+    },
+    }
+    page = st_navbar(pages, styles=styles)
+    html_string = "<h1>Ask About Pdf</h1>"
+    st.markdown(html_string, unsafe_allow_html=True)
+    
 
-    user_question = st.text_input("Ask a Question from the PDF Files")
+    
+    st.subheader("Ask a question about your PDF")
+    pdf_docs = st.file_uploader("For processing, upload your PDF files and click the 'Submit & Process' button.", accept_multiple_files=True)
+    if st.button("Start Processing!"):
+        with st.spinner("Processing..."):
+            raw_text = get_pdf_text(pdf_docs)
+            text_chunks = get_text_chunks(raw_text)
+            get_vector_store(text_chunks)
+            st.success("Done")
+    st.header("Talk to your PDFs with the power of AI!💁")
+    user_question = st.text_input("Have a question about your document? Ask here!")
+    # Create a container for the footer
+    st.divider()
+    footer = st.container()
+
+# Set the desired styling for the footer (optional)
+    with footer:
+     st.markdown(""" <style>
+        .footer {
+            position: relative;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #fcba03;
+            color: #fcba03;
+            text-align: center;
+            padding: 10px;
+        }
+        </style> """, unsafe_allow_html=True)
+# Add content to the footer
+    with footer:
+     st.write("Developed with ❤️ ")
+     st.write("© 2024 All rights reserved.")
+    
+
+
 
     if user_question:
         user_input(user_question)
 
-    with st.sidebar:
-        st.title("Menu:")
-        pdf_docs = st.file_uploader("Upload your PDF Files and Click on the Submit & Process Button", accept_multiple_files=True)
-        if st.button("Submit & Process"):
-            with st.spinner("Processing..."):
-                raw_text = get_pdf_text(pdf_docs)
-                text_chunks = get_text_chunks(raw_text)
-                get_vector_store(text_chunks)
-                st.success("Done")
-
+    
+   
 
 
 if __name__ == "__main__":
