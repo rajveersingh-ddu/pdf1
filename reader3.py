@@ -83,12 +83,16 @@ def user_input(user_question):
 
 
 def main():
-    st.set_page_config(initial_sidebar_state="collapsed")
-   
+    st.set_page_config(layout="wide",initial_sidebar_state="collapsed")
+    
+    st.sidebar.title("PolyReader")
+    st.sidebar.image('logo.jpeg')
+    st.sidebar.write("Comming Soon")
+
     pages = ["🏘 Home", "Library", "Tutorials", "Development", "Download"]
     styles = {
     "nav": {
-        "background-color": "#060270",
+        "background-color": "#567002",
     },
     "div": {
         "max-width": "32rem",
@@ -99,13 +103,29 @@ def main():
         "margin": "0 0.125rem",
     },
     "active": {
-        "background-color": "rgba(255, 255, 255, 0.50)",
+        "background-color": "rgba(8,37,81, 0.50)",
     },
     "hover": {
-        "background-color": "rgba(255, 255, 255, 0.35)",
+        "background-color": "rgba(8, 37, 81, 0.25)",
     },
     }
     page = st_navbar(pages, styles=styles)
+    # adding the logo
+    # Create a column layout
+    col1, col2,col3 = st.columns([1, 1,1])
+
+# Add text in the first column
+    with col1:
+      st.write("")
+
+# Add image in the second column
+    with col2:
+       st.image("logo.jpeg",width=300)
+#Add text in third Column
+    with col1:
+       st.write("")
+    
+
     html_string = "<h1>Ask About Pdf</h1>"
     st.markdown(html_string, unsafe_allow_html=True)
     
@@ -121,8 +141,35 @@ def main():
             st.success("Done")
     st.header("Talk to your PDFs with the power of AI!💁")
     user_question = st.text_input("Have a question about your document? Ask here!")
+    
+
+    #center
+
+    st.markdown("""
+Imagine a world where your PDFs are no longer static walls of text. AskYourPDF, powered by ChatGPT, transforms them into dynamic companions, ready to answer your questions and reveal hidden insights.
+""")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+     st.subheader("Stop Scrolling, Start Asking")
+     st.write("Forget aimlessly searching through pages. With PolyReader, simply upload your document and ask a question.  It could be anything:")
+     st.write("* What are the key takeaways from this contract?")
+     st.write("* Summarize the financial performance for Q3.")
+     st.write("* Find all mentions of competitor analysis.")
+
+    with col2:
+     st.subheader("Uncover Deeper Understandings")
+     st.write("Go beyond basic retrieval. polyReader can analyze the context of your questions, drawing connections and highlighting relevant passages. It doesn't just provide answers, it fosters a deeper understanding of the content.")
+
+     st.subheader("Boost Engagement and Efficiency")
+     st.write("""
+Whether you're a student deciphering a complex research paper or a professional navigating a lengthy report, PolyReader empowers you to interact with documents in a whole new way. Save time, improve comprehension, and unlock the full potential of your PDFs.
+""")
+
+
+    
     # Create a container for the footer
-    st.divider()
     footer = st.container()
 
 # Set the desired styling for the footer (optional)
@@ -140,9 +187,33 @@ def main():
         }
         </style> """, unsafe_allow_html=True)
 # Add content to the footer
-    with footer:
-     st.write("Developed with ❤️ ")
-     st.write("© 2024 All rights reserved.")
+    footer="""<style>
+a:link , a:visited{
+color: blue;
+background-color: transparent;
+text-decoration: underline;
+}
+
+a:hover,  a:active {
+color: red;
+background-color: transparent;
+text-decoration: underline;
+}
+
+.footer {
+left: 0;
+bottom: 0;
+width: 100%;
+background-color: teal;
+color: black;
+text-align: center;
+}
+</style>
+<div class="footer">
+<p>Developed with ❤ by<br> Rajveer Singh and Abhishek Kumar</a></p>
+</div>
+"""
+    st.markdown(footer,unsafe_allow_html=True)
     
 
 
