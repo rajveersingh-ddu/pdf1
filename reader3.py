@@ -141,6 +141,8 @@ def main():
             st.success("Done")
     st.header("Talk to your PDFs with the power of AI!💁")
     user_question = st.text_input("Have a question about your document? Ask here!")
+    if user_question:
+        user_input(user_question)
     
 
     #center
